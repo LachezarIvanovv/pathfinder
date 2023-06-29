@@ -1,0 +1,21 @@
+<nav class="main-nav" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <ul>
+        <li>
+            <a href="/">Add new route</a>
+        </li>
+        <li>
+            <a href="/profile">Profile</a>
+        </li>
+        <li sec:autorize="hasRole('ADMIN')">
+            <a href="/">Admin</a>
+        </li>
+        <li>
+            <a href="/logout">Logout</a>
+<!--            <form-->
+<!--                    th:action="@{/logout}"-->
+<!--                    th:method="post">-->
+<!--                <button type="submit">Logout</button>-->
+<!--            </form>-->
+        </li>
+    </ul>
+</nav>
