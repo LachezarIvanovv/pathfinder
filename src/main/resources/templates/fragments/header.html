@@ -1,4 +1,10 @@
+<html
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
 <header>
-    <th:block sec:autorize="isAnonymous()" th:insert="~{/fragments/guest-nav}" />
+    <th:block sec:autorize="isAnonymous()" th:incude="~{/fragments/guest-nav}" />
     <th:block sec:autorize="isAuthenticated" th:insert="~{/fragments/logged-nav}" />
 </header>
+
+></html>

@@ -9,18 +9,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import softuni.pathfinder.repository.UserRepository;
 import softuni.pathfinder.service.PathfinderUserDetailsService;
 
 @Configuration
-@EnableWebSecurity
 public class PathfinderSecurityConfiguration {
-
-    private final UserRepository userRepository;
-
-    public PathfinderSecurityConfiguration(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,18 +31,18 @@ public class PathfinderSecurityConfiguration {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/")
-                .failureForwardUrl("/login?error=true")
+                .usernameParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
+                .passwordParameter(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_PASSWORD_KEY)
+                .defaultSuccessUrl("/profile")
+                .failureForwardUrl("/login-error")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
                 .clearAuthentication(true)
                 .invalidateHttpSession(true)
-                .logoutSuccessUrl("/")
                 .and()
                 .csrf().disable();
 
@@ -57,7 +51,7 @@ public class PathfinderSecurityConfiguration {
 
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService(UserRepository userRepository){
         return new PathfinderUserDetailsService(userRepository);
     }
 }

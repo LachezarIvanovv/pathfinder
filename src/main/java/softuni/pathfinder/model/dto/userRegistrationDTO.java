@@ -20,11 +20,11 @@ public class userRegistrationDTO {
     @Max(90)
     private int age;
 
-    @NotNull
+    @NotBlank
     @Size(min = 5, max = 20)
     private String password;
 
-    @NotNull
+    @NotBlank
     @Size(min = 5, max = 20)
     private String confirmPassword;
 
