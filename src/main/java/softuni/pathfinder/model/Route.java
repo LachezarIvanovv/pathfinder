@@ -124,4 +124,13 @@ public class Route {
         this.categories = categories;
         return this;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Route setDescription(String description) {
+        this.description = description;
+        return this;
+    }
 }
