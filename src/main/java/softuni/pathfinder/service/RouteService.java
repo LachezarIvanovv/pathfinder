@@ -2,7 +2,10 @@ package softuni.pathfinder.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import softuni.pathfinder.exceptions.RouteNotFoundException;
+import softuni.pathfinder.model.Picture;
 import softuni.pathfinder.model.Route;
+import softuni.pathfinder.model.view.RouteDetailsView;
 import softuni.pathfinder.model.view.RouteIndexView;
 import softuni.pathfinder.repository.RouteRepository;
 
@@ -33,5 +36,20 @@ public class RouteService {
                         route.getDescription(),
                         route.getPictures().stream().findFirst().get().getUrl()
                 )).collect(Collectors.toList());
+    }
+
+    public RouteDetailsView getRoute(Long id){
+        return routeRepository.findById(id)
+                .map(route -> new RouteDetailsView(
+                        route.getId(),
+                        route.getGpxCoordinates(),
+                        route.getDescription(),
+                        route.getName(),
+                        route.getAuthor().getFullName(),
+                        route.getVideoUrl(),
+                        route.getPictures()
+                                .stream()
+                                .map(Picture::getUrl).collect(Collectors.toList())
+                )).orElseThrow(RouteNotFoundException::new);
     }
 }
