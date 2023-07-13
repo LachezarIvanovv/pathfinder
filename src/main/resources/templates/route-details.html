@@ -1,13 +1,13 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="~{fragments/head}"></head>
+<head th:insert="~{fragments/head}"></head>
 
 <body>
 <div class="wrapper">
     <header>
     <nav class="main-nav">
-        <th:block th:include="~{/fragments/header}"/>
+        <th:block th:insert="~{/fragments/header}"/>
     </nav>
 </header>
 
@@ -63,8 +63,9 @@
 
             <div>
                 <!-- Comments submission -->
-                <form id="commentForm" method="POST"
+                <form id="commentForm"
                       action="/">
+                    <!--                      method="POST"-->
                     <div class="form-group">
                         <h4>Leave a comment</h4>
                         <label for="message">Message</label>
