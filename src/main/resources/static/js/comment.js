@@ -1,6 +1,11 @@
 const routeId = document.getElementById('routeId').value
-const commentForm = document.findElementById('commentForm')
+const commentForm = document.getElementById('commentForm')
 commentForm.addEventListener('submit', handleForSubmission)
+
+const commentContainer = document.getElementById('commentCtnr')
+
+const csrfHeaderName = document.head.querySelector('[name_csrf_header]').content
+const csrfHeaderValue = document.head.querySelector('[name= _csrf]').content
 
 async function handleForSubmission(event){
     event.preventDefault()
@@ -11,13 +16,24 @@ async function handleForSubmission(event){
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accepts': 'application/json'
+            'Accepts': 'application/json',
+            [csrfHeaderName]: csrfHeaderValue
         },
         body: JSON.stringify({
             message: messageVal
         })
     }).then(res => res.json())
         .then(data => {
-            console.log(data)
+            document.getElementById('message').value = ""
+            commentContainer.innerHtml += commentHtml(data)
         })
+}
+
+function commentContainer(comment){
+    let commentHtml = '<div>\n'
+    commentHtml += '<h4>${comment.authorName}</h4>\n'
+    commentHtml += '<p>${comment.message}</p>\n'
+    commentHtml += '</div>\n'
+
+    return commentHtml
 }

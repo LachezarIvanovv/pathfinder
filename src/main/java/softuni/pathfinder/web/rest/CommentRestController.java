@@ -1,5 +1,6 @@
 package softuni.pathfinder.web.rest;
 
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +11,7 @@ import softuni.pathfinder.model.view.CommentDisplayView;
 import softuni.pathfinder.service.CommentService;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -19,6 +21,11 @@ public class CommentRestController {
 
     public CommentRestController(CommentService commentService) {
         this.commentService = commentService;
+    }
+
+    @GetMapping("/{routeId}/comments")
+    public ResponseEntity<List<CommentDisplayView>> getComment(@PathVariable("routeId") Long routeId){
+        return ResponseEntity.ok(commentService.getAllCommentsForRoute(routeId));
     }
 
     @PostMapping(value = "/{routeId}/comments", consumes = "application/json", produces = "application/json")
