@@ -1,6 +1,8 @@
 package softuni.pathfinder.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import softuni.pathfinder.exceptions.RouteNotFoundException;
 import softuni.pathfinder.model.Comment;
 import softuni.pathfinder.model.Route;
@@ -57,5 +59,4 @@ public class CommentService {
 
         return new CommentDisplayView(comment.getId(), author.getFullName(), comment.getText());
     }
-
 }
