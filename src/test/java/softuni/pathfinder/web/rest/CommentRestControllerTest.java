@@ -1,6 +1,7 @@
 package softuni.pathfinder.web.rest;
 
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import softuni.pathfinder.model.dto.CommentCreationDto;
 import softuni.pathfinder.model.dto.CommentMessageDto;
 import softuni.pathfinder.model.view.CommentDisplayView;
@@ -39,6 +40,9 @@ public class CommentRestControllerTest {
     @Autowired
     private CommentService commentService;
 
+//    @MockBean(name = "mockUserDetails")
+//    private UserDetails userDetails;
+
     @Test
     public void getComments_twoCommentsExist_commentsReturnedAsJsonAndStatusIsOk() throws Exception{
         Long routeId = 1L;
@@ -59,6 +63,7 @@ public class CommentRestControllerTest {
 
     @Test
     @WithMockUser(username = "testUsername")
+//    @WithUserDetails("mockUserDetails")
     public void createComment_sampleData_commentIsReturnedAsExpected() throws Exception {
         Long routeId = 1L;
 

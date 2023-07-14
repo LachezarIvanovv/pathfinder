@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import softuni.pathfinder.exceptions.RouteNotFoundException;
 import softuni.pathfinder.model.dto.CommentCreationDto;
 import softuni.pathfinder.model.dto.CommentMessageDto;
 import softuni.pathfinder.model.view.CommentDisplayView;
@@ -45,4 +46,42 @@ public class CommentRestController {
                 created(URI.create(String.format("/api/%d/comments/%d", routeId, comment.getId()))).
                 body(comment);
     }
+
+    @ExceptionHandler({RouteNotFoundException.class})
+    public ResponseEntity<ErrorApiResponse> handeRouteNotFound(){
+        return ResponseEntity.status(404).body(new ErrorApiResponse("Such route doesn't exist!", 1004));
+    }
 }
+
+class ErrorApiResponse{
+    private String message;
+    private Integer errorCode;
+
+    public ErrorApiResponse(String message, Integer errorCode) {
+        this.message = message;
+        this.errorCode = errorCode;
+    }
+
+    public ErrorApiResponse(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public ErrorApiResponse setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    public Integer getErrorCode() {
+        return errorCode;
+    }
+
+    public ErrorApiResponse setErrorCode(Integer errorCode) {
+        this.errorCode = errorCode;
+        return this;
+    }
+}
+
