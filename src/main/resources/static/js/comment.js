@@ -16,7 +16,7 @@ async function handleForSubmission(event){
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accepts': 'application/json',
+            'Accept': 'application/json',
             [csrfHeaderName]: csrfHeaderValue
         },
         body: JSON.stringify({
@@ -37,3 +37,14 @@ function commentContainer(comment){
 
     return commentHtml
 }
+
+fetch('http://localhost:8080/api/${routeId)/comments',{
+    headers: {
+        "Accept": "application/json"
+    }
+}).then(res => res.json())
+    .then(data => {
+        for(let comment of data){
+            commentContainer.innerHtml += commentAsHtml(comment)
+        }
+    })

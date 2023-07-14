@@ -35,7 +35,7 @@ public class CommentService {
         Route route = routeRepository.findById(routeId).orElseThrow(RouteNotFoundException::new);
 
         List<Comment> comments = commentRepository.findAllByRoute(route).get();
-        comments.stream().
+        return comments.stream().
                 map(comment -> new CommentDisplayView(comment.getId(),
                         comment.getAuthor().getFullName(),
                         comment.getText())).
