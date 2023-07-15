@@ -34,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CommentRestControllerTest {
 
+    private static final Long ROUTE_ID = 1L;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -45,14 +47,13 @@ public class CommentRestControllerTest {
 
     @Test
     public void getComments_twoCommentsExist_commentsReturnedAsJsonAndStatusIsOk() throws Exception{
-        Long routeId = 1L;
 
-        when(commentService.getAllCommentsForRoute(routeId)).thenReturn(List.of(
+        when(commentService.getAllCommentsForRoute(ROUTE_ID)).thenReturn(List.of(
                 new CommentDisplayView(1L, "John Doe", "This is comment #1"),
                 new CommentDisplayView(2L, "Foo Bar", "This is comment #2")
         ));
 
-        mockMvc.perform(get("/api/" + routeId + "/comments"))
+        mockMvc.perform(get("/api/" + ROUTE_ID + "/comments"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].authorName", is("John Doe")))
                 .andExpect(jsonPath("$.[0].message", is("This is comment #1")))
@@ -65,7 +66,6 @@ public class CommentRestControllerTest {
     @WithMockUser(username = "testUsername")
 //    @WithUserDetails("mockUserDetails")
     public void createComment_sampleData_commentIsReturnedAsExpected() throws Exception {
-        Long routeId = 1L;
 
         when(commentService.createComment(any())).thenAnswer(interaction -> {
             CommentCreationDto commentCreationDto = interaction.getArgument(0);
@@ -75,7 +75,7 @@ public class CommentRestControllerTest {
         CommentMessageDto commentMessageDto = new CommentMessageDto("This is comment #1");
         ObjectMapper objectMapper = new ObjectMapper();
 
-        mockMvc.perform(post("/api/" + routeId + "/comments")
+        mockMvc.perform(post("/api/" + ROUTE_ID + "/comments")
                 .content(objectMapper.writeValueAsString(commentMessageDto))
                 .with(csrf())
                         .contentType("application/json")
